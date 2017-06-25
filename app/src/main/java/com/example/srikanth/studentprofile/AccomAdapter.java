@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class AccomAdapter extends RecyclerView.Adapter<AccomAdapter.AccomViewHolder> {
     public static ArrayList<AccomDetails> adapterData;
+
     Context context;
 
 
@@ -113,6 +114,6 @@ public class AccomAdapter extends RecyclerView.Adapter<AccomAdapter.AccomViewHol
 
 
 
-
+//
 
 }
