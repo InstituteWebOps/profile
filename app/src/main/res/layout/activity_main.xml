@@ -206,11 +206,11 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/editText"
+                        android:id="@+id/contactEmail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginTop="7dp"
+                        android:layout_marginTop="8dp"
                         android:ems="10"
                         android:hint="@string/Emailedittext"
                         android:inputType="textEmailAddress"
@@ -235,11 +235,11 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/editText"
+                        app:layout_constraintTop_toTopOf="@+id/contactEmail"
                         app:srcCompat="@drawable/ic_action_email" />
 
                     <EditText
-                        android:id="@+id/editText2"
+                        android:id="@+id/contactPhoneno"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -248,7 +248,7 @@
                         android:hint="@string/phonenoEdittext"
                         android:inputType="phone"
                         app:layout_constraintLeft_toRightOf="@+id/imageView"
-                        app:layout_constraintTop_toBottomOf="@+id/editText"
+                        app:layout_constraintTop_toBottomOf="@+id/contactEmail"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginBottom="8dp" />
 
@@ -259,7 +259,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/editText2"
+                        app:layout_constraintTop_toTopOf="@+id/contactPhoneno"
                         app:srcCompat="@drawable/ic_action_mobile" />
 
                 </android.support.constraint.ConstraintLayout>

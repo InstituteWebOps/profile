@@ -1,5 +1,6 @@
 package com.example.srikanth.studentprofile;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,8 +58,17 @@ public class AccomAdapter extends RecyclerView.Adapter<AccomAdapter.AccomViewHol
                 postionValue=position;
 
                 if(v.getId()==R.id.accom_pencil_image){
-                    Intent intent=new Intent(context,AccomPencilEdit.class);
-                    context.startActivity(intent);
+                    // Create new fragment and transaction
+                    android.app.Fragment newFragment = new AccomPencilEdit();
+                    FragmentTransaction transaction = MainActivity.fragmentManager.beginTransaction();
+
+                    // Replace whatever is in the fragment_container view with this fragment,
+                   // and add the transaction to the back stack
+                    transaction.replace(R.id.mainActivityRelativeLayout, newFragment);
+                    transaction.addToBackStack(null);
+
+                    // Commit the transaction
+                    transaction.commit();
                 }
             }
         });

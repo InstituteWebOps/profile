@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -118,9 +119,43 @@ public class AccomEditActivity extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.accom_save_action_button){
-            //grabbing the details entered in the fields into cardview.
+            //Checking for validation.
+            final AlertDialog.Builder builder  = new AlertDialog.Builder(getActivity());
 
-            AccomDetailArray.makeAccomCard();
+            //Checking validation
+            if((accomOrgan.getText().toString().length()==0) && (accomPos.getText().toString().length()==0)){
+                builder.setMessage("Enter Organisation name and position.")
+                        .setPositiveButton("Ok",null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return super.onOptionsItemSelected(item);
+            }
+            else if (!(accomOrgan.getText().toString().length()==0) && (accomPos.getText().toString().length()==0)){
+                builder.setMessage("Position name is neccessary.")
+                        .setPositiveButton("Ok",null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return super.onOptionsItemSelected(item);
+            }
+            else if ((accomOrgan.getText().toString().length()==0) && !(accomPos.getText().toString().length()==0)){
+                builder.setMessage("Enter Organisation name.")
+                        .setPositiveButton("Ok",null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return super.onOptionsItemSelected(item);
+            }
+
+
+            // Saving the data.
+            //grabbing the details entered in the fields into cardview.
+            AccomDetails current=new AccomDetails();
+            current.accomOrgan=AccomEditActivity.accomOrgan.getText().toString();
+            current.accomPos  =AccomEditActivity.accomPos.getText().toString();
+            current.accomFromyear =AccomEditActivity.accomFromyear.getText().toString();
+            current.accomToyear =AccomEditActivity.accomToyear.getText().toString();
+            AccomDetailArray.makeAccomCard(current);
+
+
             Toast.makeText(getActivity(),"Saved.",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getActivity(),MainActivity.class));
 

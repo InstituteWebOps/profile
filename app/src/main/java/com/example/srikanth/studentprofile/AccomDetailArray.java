@@ -17,12 +17,8 @@ public class AccomDetailArray {
         return data;
     }
 
-    public static void makeAccomCard(){
-        AccomDetails current=new AccomDetails();
-        current.accomOrgan=AccomEditActivity.accomOrgan.getText().toString();
-        current.accomPos  =AccomEditActivity.accomPos.getText().toString();
-        current.accomFromyear =AccomEditActivity.accomFromyear.getText().toString();
-        current.accomToyear =AccomEditActivity.accomToyear.getText().toString();
+    public static void makeAccomCard(AccomDetails current){
+
 
         data.add(current);
         //AccomAdapter.adapterData=data;

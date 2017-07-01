@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
@@ -27,6 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private final static  int CAPTURED_PICTURE=0;
     String mCurrentPhotoPath;
 
+    EditText email,phoneno;
+    static android.app.FragmentManager  fragmentManager;
 
     RecyclerView accomRV;
     public static AccomAdapter accomadapter;
@@ -49,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        email = (EditText) findViewById(R.id.contactEmail);
+        phoneno = (EditText) findViewById(R.id.contactPhoneno);
 
-
+        fragmentManager = getFragmentManager();
 
         profilePicImage = (CircleImageView) findViewById(R.id.profile_pic);
         profilePicImage.setOnClickListener(new View.OnClickListener() {
@@ -150,15 +158,39 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.accom_save_action_button){
-            AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+            final AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+
+            //Checking validation
+            if(!isEmailValid(email.getText().toString()) && !isPhonenoValid(phoneno.getText().toString())){
+                builder.setMessage("Invalid Email and phone no.")
+                        .setPositiveButton("Ok",null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return super.onOptionsItemSelected(item);
+            }
+            else if (!isEmailValid(email.getText().toString()) && isPhonenoValid(phoneno.getText().toString())){
+                builder.setMessage("Invalid Email.")
+                        .setPositiveButton("Ok",null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return super.onOptionsItemSelected(item);
+            }
+            else if (isEmailValid(email.getText().toString()) && !isPhonenoValid(phoneno.getText().toString())){
+                builder.setMessage("Invalid Phone no.")
+                        .setPositiveButton("Ok",null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return super.onOptionsItemSelected(item);
+            }
+
+
+
             builder.setMessage("Do you want to save changes?")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //Upload the data into the server.
-
-
-
+                            Toast.makeText(MainActivity.this,"Uploading",Toast.LENGTH_SHORT).show();
 
                             /**********************************/
                         }
@@ -168,11 +200,11 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
-
-
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     // This method invokes when the upload imagebutton is clicked.
 
@@ -181,6 +213,27 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent,SELECTED_PICTURE_FOR_GALLERY);
 
+    }
+
+    /**
+     * method is used for checking valid email id format.
+     *
+     * @param email
+     * @return boolean true for valid false for invalid
+     */
+    private boolean isEmailValid(String email) {
+        if( email.length()==0)     // email field can be vacant.
+            return true;
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    private boolean isPhonenoValid(String s) {
+
+        if(s.length()==10 || s.length()==0)
+            return true;
+        return false;
     }
 
 
