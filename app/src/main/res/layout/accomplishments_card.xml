@@ -7,8 +7,9 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="2dp"
     app:cardElevation="4dp"
-    android:layout_marginBottom="8dp" >
-
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"  >
     <android.support.constraint.ConstraintLayout
         android:id="@+id/accom_card_constrainlayout"
         android:layout_width="match_parent"

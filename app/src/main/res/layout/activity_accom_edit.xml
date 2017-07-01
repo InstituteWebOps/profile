@@ -4,41 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_light"
     tools:context="com.example.srikanth.studentprofile.AccomEditActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <EditText
             android:id="@+id/accom_organ_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="Organisation"
             android:inputType="textPersonName"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/accom_pos_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="Position in Organisation"
             android:inputType="textPersonName"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/accom_organ_edittext"
-            android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/accom_organ_edittext" />
 
         <EditText
             android:id="@+id/accom_fromyear_edittext"
@@ -49,9 +52,9 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
+            android:focusable="false"
             android:hint="From"
-            android:inputType="date"
-            android:maxLength="4"
+            android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/guideline"
@@ -67,9 +70,9 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
+            android:focusable="false"
             android:hint="To"
-            android:inputType="date"
-            android:maxLength="4"
+            android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@+id/guideline"
             app:layout_constraintRight_toRightOf="parent"
@@ -77,9 +80,9 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <android.support.constraint.Guideline
+            android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/guideline"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 

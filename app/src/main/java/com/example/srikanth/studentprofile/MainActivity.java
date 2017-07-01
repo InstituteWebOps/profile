@@ -1,51 +1,39 @@
 package com.example.srikanth.studentprofile;
 
-import android.content.ContentValues;
+
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.FileProvider;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static android.R.attr.bitmap;
-import static android.R.attr.thumbnail;
-import static android.os.Environment.getExternalStoragePublicDirectory;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
     // This is a reference to catch Profile picture imagebutton view.
-    ImageButton profilePicImage;
+    CircleImageView profilePicImage;
     private final static  int SELECTED_PICTURE_FOR_GALLERY=1;
     private final static  int CAPTURED_PICTURE=0;
     String mCurrentPhotoPath;
@@ -62,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        profilePicImage = (ImageButton) findViewById(R.id.profile_pic);
+
+
+        profilePicImage = (CircleImageView) findViewById(R.id.profile_pic);
         profilePicImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,10 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getItemId()==R.id.upload_image_item){
-                            onUploadButtonClicked();
-                        }
-                        else if(item.getItemId()==R.id.remove_image_item){
+                         if(item.getItemId()==R.id.remove_image_item){
 
                             AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
                             builder.setMessage("Do you want to remove your Proile Pic?")
@@ -92,7 +79,15 @@ public class MainActivity extends AppCompatActivity {
                             alertDialog.show();
                         }
 
-                        else if(item.getItemId()==R.id.capture_image_item){
+                        if(item.getItemId()==R.id.default_image_item){
+                            setDefaultProfilePic();
+                        }
+                        
+                        /*else if(item.getItemId()==R.id.upload_image_item){
+                            onUploadButtonClicked();
+                        }
+                        
+                       else if(item.getItemId()==R.id.capture_image_item){
 
                             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             // Ensure that there's a camera activity to handle the intent
@@ -116,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
 
-                        }
+                        }*/
 
                         return true;
 
@@ -132,13 +127,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         accomRV=(RecyclerView) findViewById(R.id.accom_rv);
-        accomadapter=new AccomAdapter(this,AccomDetailArray.getAccomData());
+        accomadapter=new AccomAdapter(this, AccomDetailArray.getAccomData());
         LinearLayoutManager layoutmanger=new LinearLayoutManager(this);
         accomRV.setLayoutManager(layoutmanger);
         accomRV.setAdapter(accomadapter);
         accomRV.setHasFixedSize(true);
 
 
+    }
+
+    private void setDefaultProfilePic() {
     }
 
     @Override
@@ -238,14 +236,28 @@ public class MainActivity extends AppCompatActivity {
     /*****************************************************************/
 
 
-    // This method is when accom_plus_image is clicked.
-    public void onAccomPlusClicked(View view){
-        Intent intent = new Intent(this,AccomEditActivity.class);
-        startActivity(intent);
+    // This method is invoked when accom_plus_image is clicked.
+    public void onAccomPlusClicked(View view) {
+        /*Intent intent = new Intent(this,AccomEditActivity.class);
+        startActivity(intent);*/
+        /*Fragment fragment = new AccomEditActivity();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mainActivityRelativeLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();*/
+        // Create new fragment and transaction
+        android.app.Fragment newFragment = new AccomEditActivity();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack
+        transaction.replace(R.id.mainActivityRelativeLayout, newFragment);
+        transaction.addToBackStack(null);
+
+// Commit the transaction
+        transaction.commit();
     }
 
 
-
+    // Required for Capture image ,this method creates a file for saving the captured image.
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

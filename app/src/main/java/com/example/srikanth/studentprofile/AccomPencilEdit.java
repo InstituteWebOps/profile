@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class AccomPencilEdit extends AppCompatActivity {
     EditText accomPencilOrgan,accomPencilPos,accomPencilFromyear,accomPencilToyear;
@@ -17,12 +16,12 @@ public class AccomPencilEdit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accom_pencil_edit);
+        setContentView(R.layout.activity_accom_edit);
 
-        accomPencilOrgan = (EditText) findViewById(R.id.accom_editpencil_organ);
-        accomPencilPos= (EditText) findViewById(R.id.accom_editpencil_pos);
-        accomPencilFromyear= (EditText) findViewById(R.id.accom_editpencil_fromyear);
-        accomPencilToyear = (EditText) findViewById(R.id.accom_editpencil_toyear);
+        accomPencilOrgan = (EditText) findViewById(R.id.accom_organ_edittext);
+        accomPencilPos= (EditText) findViewById(R.id.accom_pos_edittext);
+        accomPencilFromyear= (EditText) findViewById(R.id.accom_fromyear_edittext);
+        accomPencilToyear = (EditText) findViewById(R.id.accom_toyear_edittext);
 
 
 

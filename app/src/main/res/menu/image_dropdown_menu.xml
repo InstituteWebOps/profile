@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Upload Image from Gallery"
+   <!-- <item android:title="Upload Image from Gallery"
 
         android:visible="true"
         android:id="@+id/upload_image_item"/>
@@ -10,9 +10,9 @@
     <item android:title="Capture Image"
 
         android:visible="true"
-        android:id="@+id/capture_image_item"/>
+        android:id="@+id/capture_image_item"/>-->
 
-    <item android:title="Set Default Image"
+    <item android:title="Set Image"
 
         android:visible="true"
         android:id="@+id/default_image_item"/>
@@ -21,6 +21,7 @@
 
         android:visible="true"
         android:id="@+id/remove_image_item"/>
+
 
 
 

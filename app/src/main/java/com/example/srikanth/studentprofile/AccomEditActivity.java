@@ -1,43 +1,118 @@
 package com.example.srikanth.studentprofile;
 
+import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AccomEditActivity extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+public class AccomEditActivity extends Fragment {
 
     public static EditText accomOrgan,accomPos,accomFromyear,accomToyear;
+    Calendar myCalendar = Calendar.getInstance();
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.activity_accom_edit,container,false);
+        accomOrgan = (EditText) v.findViewById(R.id.accom_organ_edittext);
+        accomPos = (EditText) v.findViewById(R.id.accom_pos_edittext);
+        accomFromyear = (EditText) v.findViewById(R.id.accom_fromyear_edittext);
+        accomToyear = (EditText) v.findViewById(R.id.accom_toyear_edittext);
+
+        final DatePickerDialog.OnDateSetListener fromDate = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                fromUpdateLabel();
+            }
+
+        };
+
+        final DatePickerDialog.OnDateSetListener toDate = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                toUpdateLabel();
+            }
+
+        };
+
+        accomFromyear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(getActivity(), fromDate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        accomToyear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(getActivity(), toDate,myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
+
+        return v;
+    }
+
+
+
+    private void fromUpdateLabel() {
+
+        String myFormat = "MMMM yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        accomFromyear.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    private void toUpdateLabel() {
+
+        String myFormat = "MMMM yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        accomToyear.setText(sdf.format(myCalendar.getTime()));
+    }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accom_edit);
-
-        accomOrgan = (EditText) findViewById(R.id.accom_organ_edittext);
-        accomPos = (EditText) findViewById(R.id.accom_pos_edittext);
-        accomFromyear = (EditText) findViewById(R.id.accom_fromyear_edittext);
-        accomToyear = (EditText) findViewById(R.id.accom_toyear_edittext);
-
-
-
-
+        setHasOptionsMenu(true);
 
     }
+    /*@Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.accom_save_action,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+        super.onCreateOptionsMenu(menu, menuInflater);
+        menuInflater.inflate(R.menu.accom_save_action,menu);
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -46,10 +121,14 @@ public class AccomEditActivity extends AppCompatActivity {
             //grabbing the details entered in the fields into cardview.
 
             AccomDetailArray.makeAccomCard();
-            Toast.makeText(this,"Saved.",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(AccomEditActivity.this,MainActivity.class));
+            Toast.makeText(getActivity(),"Saved.",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(),MainActivity.class));
 
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
+
+
