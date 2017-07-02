@@ -13,9 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 public class AccomPencilEdit extends Fragment {
-    EditText accomPencilOrgan,accomPencilPos,accomPencilFromyear,accomPencilToyear;
+    static EditText accomPencilOrgan,accomPencilPos,accomPencilFromyear,accomPencilToyear;
+    RadioGroup radioGroup;
+    public static String flagForDate="" ;
 
     @Nullable
     @Override
@@ -32,6 +35,26 @@ public class AccomPencilEdit extends Fragment {
         accomPencilFromyear.setText(AccomAdapter.adapterData.get(AccomAdapter.postionValue).accomFromyear);
         accomPencilToyear.setText(AccomAdapter.adapterData.get(AccomAdapter.postionValue).accomToyear);
 
+        radioGroup = (RadioGroup) v.findViewById(R.id.radioGroupAccom);
+        radioGroup.setVisibility(View.GONE);
+
+        accomPencilToyear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flagForDate = "ToDate";
+                android.app.DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(MainActivity.fragmentManager,"datepicker");
+            }
+        });
+
+        accomPencilFromyear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flagForDate = "FromDate";
+                android.app.DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(MainActivity.fragmentManager,"datepicker");
+            }
+        });
 
         return v;
     }

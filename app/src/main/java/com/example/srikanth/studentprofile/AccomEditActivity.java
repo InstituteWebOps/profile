@@ -1,6 +1,5 @@
 package com.example.srikanth.studentprofile;
 
-import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,18 +9,22 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class AccomEditActivity extends Fragment {
 
     public static EditText accomOrgan,accomPos,accomFromyear,accomToyear;
-    Calendar myCalendar = Calendar.getInstance();
+
+    static RadioButton radioButtonOrganisation,radioButtonProject;
+    RadioGroup radioGroup;
+    static String radioStatus="";
+    String firstEditText="";
+    String secondeditText="";
+
+    static String flagForDate="";
 
     @Nullable
     @Override
@@ -32,74 +35,35 @@ public class AccomEditActivity extends Fragment {
         accomFromyear = (EditText) v.findViewById(R.id.accom_fromyear_edittext);
         accomToyear = (EditText) v.findViewById(R.id.accom_toyear_edittext);
 
-        final DatePickerDialog.OnDateSetListener fromDate = new DatePickerDialog.OnDateSetListener() {
+        // Selecting between organisation and project.
+        radioGroup = (RadioGroup) v.findViewById(R.id.radioGroupAccom);
+        radioButtonOrganisation = (RadioButton) v.findViewById(R.id.radio_Button_Organisation);
+        radioButtonProject = (RadioButton) v.findViewById(R.id.radio_Button_Project);
+        radioButtonOrganisation.setChecked(true);
 
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                fromUpdateLabel();
-            }
-
-        };
-
-        final DatePickerDialog.OnDateSetListener toDate = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                toUpdateLabel();
-            }
-
-        };
-
-        accomFromyear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                new DatePickerDialog(getActivity(), fromDate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
 
         accomToyear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                new DatePickerDialog(getActivity(), toDate,myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                flagForDate = "ToDate";
+                android.app.DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(MainActivity.fragmentManager,"datepicker");
             }
         });
 
+        accomFromyear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flagForDate = "FromDate";
+                android.app.DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(MainActivity.fragmentManager,"datepicker");
+            }
+        });
 
 
         return v;
     }
 
-
-
-    private void fromUpdateLabel() {
-
-        String myFormat = "MMMM yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        accomFromyear.setText(sdf.format(myCalendar.getTime()));
-    }
-
-    private void toUpdateLabel() {
-
-        String myFormat = "MMMM yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        accomToyear.setText(sdf.format(myCalendar.getTime()));
-    }
 
 
     @Override
@@ -119,35 +83,44 @@ public class AccomEditActivity extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.accom_save_action_button){
-            //Checking for validation.
-            final AlertDialog.Builder builder  = new AlertDialog.Builder(getActivity());
 
+            final AlertDialog.Builder builder  = new AlertDialog.Builder(getActivity());
+            if(radioStatus.equals("Organisation")){
+                firstEditText="Organisation";
+                secondeditText="Position";
+            }
+            else {
+                firstEditText="Project Title";
+                secondeditText="Project description";
+            }
             //Checking validation
             if((accomOrgan.getText().toString().length()==0) && (accomPos.getText().toString().length()==0)){
-                builder.setMessage("Enter Organisation name and position.")
+                builder.setMessage(firstEditText+" and "+secondeditText+" is neccessary.")
                         .setPositiveButton("Ok",null);
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
                 return super.onOptionsItemSelected(item);
+
             }
             else if (!(accomOrgan.getText().toString().length()==0) && (accomPos.getText().toString().length()==0)){
-                builder.setMessage("Position name is neccessary.")
+                builder.setMessage(secondeditText+" is neccessary.")
                         .setPositiveButton("Ok",null);
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
                 return super.onOptionsItemSelected(item);
+
             }
             else if ((accomOrgan.getText().toString().length()==0) && !(accomPos.getText().toString().length()==0)){
-                builder.setMessage("Enter Organisation name.")
+                builder.setMessage(firstEditText+" is neccessary.")
                         .setPositiveButton("Ok",null);
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
                 return super.onOptionsItemSelected(item);
+
             }
 
-
             // Saving the data.
-            //grabbing the details entered in the fields into cardview.
+            //grabbing the details entered in the fields into cardview(RecyclerView's Adapter data).
             AccomDetails current=new AccomDetails();
             current.accomOrgan=AccomEditActivity.accomOrgan.getText().toString();
             current.accomPos  =AccomEditActivity.accomPos.getText().toString();

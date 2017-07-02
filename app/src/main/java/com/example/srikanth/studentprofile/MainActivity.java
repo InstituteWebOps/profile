@@ -10,8 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.io.File;
@@ -28,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,8 +42,10 @@ public class MainActivity extends AppCompatActivity {
     private final static  int CAPTURED_PICTURE=0;
     String mCurrentPhotoPath;
 
+    public static Calendar myCalendar = Calendar.getInstance();
+
     EditText email,phoneno;
-    static android.app.FragmentManager  fragmentManager;
+    public static android.app.FragmentManager  fragmentManager;
 
     RecyclerView accomRV;
     public static AccomAdapter accomadapter;
@@ -327,6 +329,28 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_Button_Organisation:
+                if (checked)
+                    AccomEditActivity.radioButtonProject.setChecked(false);
+                    AccomEditActivity.radioStatus="Organisation";
+                    AccomEditActivity.accomOrgan.setHint("Organisation");
+                    AccomEditActivity.accomPos.setHint("Position in Organisation");
+                break;
+            case R.id.radio_Button_Project:
+                if (checked)
+                    AccomEditActivity.radioButtonOrganisation.setChecked(false);
+                    AccomEditActivity.radioStatus="Project";
+                    AccomEditActivity.accomOrgan.setHint("Project Title");
+                    AccomEditActivity.accomPos.setHint("Project description");
+                break;
+        }
+    }
 
 
 }
