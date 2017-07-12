@@ -23,6 +23,7 @@ public class AccomDetailArray {
         data.add(current);
         //AccomAdapter.adapterData=data;
         MainActivity.accomadapter.notifyDataSetChanged();
+
         //MainActivity.accomadapter.notifyItemInserted(data.indexOf(current));
 
 

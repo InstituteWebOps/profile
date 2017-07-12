@@ -2,10 +2,12 @@ package com.example.srikanth.studentprofile;
 
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,11 +17,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -34,6 +40,8 @@ import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.srikanth.studentprofile.AccomEditActivity.accomPos;
+
 public class MainActivity extends AppCompatActivity {
 
     // This is a reference to catch Profile picture imagebutton view.
@@ -44,7 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
     public static Calendar myCalendar = Calendar.getInstance();
 
-    EditText email,phoneno;
+    EditText email,phoneno,nickName,aboutThePerson;
+    static String emailString="",phonenoString="",nickNameString="",aboutThePersonString="";
+    CheckBox roomNoCheckbox;
+    static Boolean roomNoChecked=true;
+
     public static android.app.FragmentManager  fragmentManager;
 
     RecyclerView accomRV;
@@ -52,13 +64,23 @@ public class MainActivity extends AppCompatActivity {
 
     private File imageFile;
 
+    static String activity="";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        activity = "MainActivity";
         email = (EditText) findViewById(R.id.contactEmail);
         phoneno = (EditText) findViewById(R.id.contactPhoneno);
+        nickName = (EditText) findViewById(R.id.nick_name) ;
+        aboutThePerson = (EditText) findViewById(R.id.about_the_person);
+        roomNoCheckbox = (CheckBox) findViewById(R.id.room_no_checkbox);
+        roomNoCheckbox.setChecked(true);
+
 
         fragmentManager = getFragmentManager();
 
@@ -74,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                          if(item.getItemId()==R.id.remove_image_item){
+                             item.setVisible(false);
 
                             AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
                             builder.setMessage("Do you want to remove your Proile Pic?")
@@ -90,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         if(item.getItemId()==R.id.default_image_item){
+                            item.setVisible(false);
                             setDefaultProfilePic();
                         }
                         
@@ -141,9 +165,82 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutmanger=new LinearLayoutManager(this);
         accomRV.setLayoutManager(layoutmanger);
         accomRV.setAdapter(accomadapter);
-        accomRV.setHasFixedSize(true);
 
+        email.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
+                if(!isEmailValid(email.getText().toString())){
+                    final AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage("Email is invalid.")
+                            .setPositiveButton("Ok",null);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+        phoneno.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if(!isPhonenoValid(phoneno.getText().toString())){
+                    final AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage("Phone no. is invalid.")
+                            .setPositiveButton("Ok",null);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                    return true;
+                }
+                InputMethodManager inputManager =
+                        (InputMethodManager) MainActivity.this.
+                                getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(
+                        MainActivity.this.getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
+                phoneno.clearFocus();
+                return false;
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        nickNameString = nickName.getText().toString();
+        aboutThePersonString = aboutThePerson.getText().toString();
+        phonenoString = phoneno.getText().toString();
+        emailString = email.getText().toString();
+        roomNoChecked = roomNoCheckbox.isChecked();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        nickName.setText(nickNameString);
+        email.setText(emailString);
+        phoneno.setText(phonenoString);
+        aboutThePerson.setText(aboutThePersonString);
+        if(!roomNoChecked){
+            roomNoCheckbox.setChecked(false);
+            ((TextView) findViewById(R.id.room_no)).setTextColor(Color.GRAY);
+        }
     }
 
     private void setDefaultProfilePic() {
@@ -159,49 +256,49 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == R.id.accom_save_action_button){
-            final AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+        if(item.getItemId() == R.id.accom_save_action_button) {
+            if (activity.equals("MainActivity")) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            //Checking validation
-            if(!isEmailValid(email.getText().toString()) && !isPhonenoValid(phoneno.getText().toString())){
-                builder.setMessage("Invalid Email and phone no.")
-                        .setPositiveButton("Ok",null);
+                //Checking validation
+                if (!isEmailValid(email.getText().toString()) && !isPhonenoValid(phoneno.getText().toString())) {
+                    builder.setMessage("Invalid Email and phone no.")
+                            .setPositiveButton("Ok", null);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    return super.onOptionsItemSelected(item);
+                } else if (!isEmailValid(email.getText().toString()) && isPhonenoValid(phoneno.getText().toString())) {
+                    builder.setMessage("Invalid Email.")
+                            .setPositiveButton("Ok", null);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    return super.onOptionsItemSelected(item);
+                } else if (isEmailValid(email.getText().toString()) && !isPhonenoValid(phoneno.getText().toString())) {
+                    builder.setMessage("Invalid Phone no.")
+                            .setPositiveButton("Ok", null);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                    return super.onOptionsItemSelected(item);
+                }
+
+
+                builder.setMessage("Do you want to save changes?")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Upload the data into the server.
+                                Toast.makeText(MainActivity.this, "Uploading", Toast.LENGTH_SHORT).show();
+
+                                /**********************************/
+                            }
+                        })
+                        .setNegativeButton("Cancel", null);
+
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
-                return super.onOptionsItemSelected(item);
+
             }
-            else if (!isEmailValid(email.getText().toString()) && isPhonenoValid(phoneno.getText().toString())){
-                builder.setMessage("Invalid Email.")
-                        .setPositiveButton("Ok",null);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                return super.onOptionsItemSelected(item);
-            }
-            else if (isEmailValid(email.getText().toString()) && !isPhonenoValid(phoneno.getText().toString())){
-                builder.setMessage("Invalid Phone no.")
-                        .setPositiveButton("Ok",null);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                return super.onOptionsItemSelected(item);
-            }
-
-
-
-            builder.setMessage("Do you want to save changes?")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //Upload the data into the server.
-                            Toast.makeText(MainActivity.this,"Uploading",Toast.LENGTH_SHORT).show();
-
-                            /**********************************/
-                        }
-                    })
-                    .setNegativeButton("Cancel",null);
-
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -293,11 +390,7 @@ public class MainActivity extends AppCompatActivity {
 
     // This method is invoked when accom_plus_image is clicked.
     public void onAccomPlusClicked(View view) {
-        /*Intent intent = new Intent(this,AccomEditActivity.class);
-        startActivity(intent);*/
-        /*Fragment fragment = new AccomEditActivity();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mainActivityRelativeLayout, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();*/
+
         // Create new fragment and transaction
         android.app.Fragment newFragment = new AccomEditActivity();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -340,15 +433,26 @@ public class MainActivity extends AppCompatActivity {
                     AccomEditActivity.radioButtonProject.setChecked(false);
                     AccomEditActivity.radioStatus="Organisation";
                     AccomEditActivity.accomOrgan.setHint("Organisation");
-                    AccomEditActivity.accomPos.setHint("Position in Organisation");
+                    accomPos.setHint("Position in Organisation");
                 break;
             case R.id.radio_Button_Project:
                 if (checked)
                     AccomEditActivity.radioButtonOrganisation.setChecked(false);
                     AccomEditActivity.radioStatus="Project";
                     AccomEditActivity.accomOrgan.setHint("Project Title");
-                    AccomEditActivity.accomPos.setHint("Project description");
+                    accomPos.setHint("Project description");
                 break;
+        }
+    }
+
+    public void onRoomNoChecked(View view){
+        if(roomNoCheckbox.isChecked()){
+            roomNoCheckbox.setChecked(true);
+            ((TextView) findViewById(R.id.room_no)).setTextColor(Color.BLACK);
+        }
+        else{
+            roomNoCheckbox.setChecked(false);
+            ((TextView) findViewById(R.id.room_no)).setTextColor(Color.GRAY);
         }
     }
 

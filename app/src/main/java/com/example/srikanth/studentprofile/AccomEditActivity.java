@@ -1,17 +1,22 @@
 package com.example.srikanth.studentprofile;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AccomEditActivity extends Fragment {
@@ -20,7 +25,7 @@ public class AccomEditActivity extends Fragment {
 
     static RadioButton radioButtonOrganisation,radioButtonProject;
     RadioGroup radioGroup;
-    static String radioStatus="";
+    static String radioStatus="Organisation";
     String firstEditText="";
     String secondeditText="";
 
@@ -30,6 +35,9 @@ public class AccomEditActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_accom_edit,container,false);
+
+        MainActivity.activity = "AccomEditActivity";
+
         accomOrgan = (EditText) v.findViewById(R.id.accom_organ_edittext);
         accomPos = (EditText) v.findViewById(R.id.accom_pos_edittext);
         accomFromyear = (EditText) v.findViewById(R.id.accom_fromyear_edittext);
@@ -59,6 +67,76 @@ public class AccomEditActivity extends Fragment {
                 newFragment.show(MainActivity.fragmentManager,"datepicker");
             }
         });
+
+        accomOrgan.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(radioStatus.equals("Organisation")){
+                    if(accomOrgan.getText().toString().equals("")){
+                        final AlertDialog.Builder builder  = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Organisation name is neccessary.")
+                                .setPositiveButton("Ok",null);
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        accomOrgan.requestFocus();
+                        return true;
+                    }
+                }
+                else {
+                    if(accomOrgan.getText().toString().equals("")){
+                        final AlertDialog.Builder builder  = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Project title is neccessary.")
+                                .setPositiveButton("Ok",null);
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        accomOrgan.requestFocus();
+                        return true;
+                    }
+                }
+                accomPos.requestFocus();
+                return true;
+            }
+        });
+
+        accomPos.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if(radioStatus.equals("Organisation")){
+                    if(accomPos.getText().toString().equals("")){
+                        final AlertDialog.Builder builder  = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Position is neccessary.")
+                                .setPositiveButton("Ok",null);
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        accomPos.requestFocus();
+                        return true;
+                    }
+                }
+                else {
+                    if(accomPos.getText().toString().equals("")){
+                        final AlertDialog.Builder builder  = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Project description is neccessary.")
+                                .setPositiveButton("Ok",null);
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        accomPos.requestFocus();
+                        return true;
+                    }
+                }
+
+                InputMethodManager inputManager =
+                        (InputMethodManager) getActivity().
+                                getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(
+                        getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
+                accomPos.clearFocus();
+                return false;
+            }
+        });
+
 
 
         return v;
@@ -126,6 +204,7 @@ public class AccomEditActivity extends Fragment {
             current.accomPos  =AccomEditActivity.accomPos.getText().toString();
             current.accomFromyear =AccomEditActivity.accomFromyear.getText().toString();
             current.accomToyear =AccomEditActivity.accomToyear.getText().toString();
+            current.radioStatus =AccomEditActivity.radioStatus;
             AccomDetailArray.makeAccomCard(current);
 
 

@@ -58,6 +58,7 @@ public class AccomAdapter extends RecyclerView.Adapter<AccomAdapter.AccomViewHol
                 postionValue=position;
 
                 if(v.getId()==R.id.accom_pencil_image){
+
                     // Create new fragment and transaction
                     android.app.Fragment newFragment = new AccomPencilEdit();
                     FragmentTransaction transaction = MainActivity.fragmentManager.beginTransaction();
@@ -86,6 +87,7 @@ public class AccomAdapter extends RecyclerView.Adapter<AccomAdapter.AccomViewHol
                                 public void onClick(DialogInterface dialog, int which) {
                                     adapterData.remove(position);
                                     notifyItemRemoved(position);
+
 
                                 }
                             })

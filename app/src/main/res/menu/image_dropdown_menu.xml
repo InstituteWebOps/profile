@@ -12,10 +12,10 @@
         android:visible="true"
         android:id="@+id/capture_image_item"/>-->
 
-    <item android:title="Set Image"
+    <item
+        android:id="@+id/default_image_item"
 
-        android:visible="true"
-        android:id="@+id/default_image_item"/>
+        android:title="Set Image" />
 
     <item android:title="Remove Image"
 

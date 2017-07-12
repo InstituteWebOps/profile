@@ -24,12 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AccomEditActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".AccomPencilEdit"
-            android:parentActivityName=".MainActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

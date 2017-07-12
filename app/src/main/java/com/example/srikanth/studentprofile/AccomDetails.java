@@ -6,6 +6,6 @@ package com.example.srikanth.studentprofile;
 
 public class AccomDetails {
 
-    public String accomOrgan,accomPos,accomFromyear,accomToyear;
-    public int no;
+    public String accomOrgan,accomPos,accomFromyear,accomToyear,radioStatus;
+
 }
