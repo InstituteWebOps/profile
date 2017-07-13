@@ -24,7 +24,6 @@ public class AccomEditActivity extends Fragment {
     public static EditText accomOrgan,accomPos,accomFromyear,accomToyear;
 
     static RadioButton radioButtonOrganisation,radioButtonProject;
-    RadioGroup radioGroup;
     static String radioStatus="Organisation";
     String firstEditText="";
     String secondeditText="";
@@ -44,7 +43,6 @@ public class AccomEditActivity extends Fragment {
         accomToyear = (EditText) v.findViewById(R.id.accom_toyear_edittext);
 
         // Selecting between organisation and project.
-        radioGroup = (RadioGroup) v.findViewById(R.id.radioGroupAccom);
         radioButtonOrganisation = (RadioButton) v.findViewById(R.id.radio_Button_Organisation);
         radioButtonProject = (RadioButton) v.findViewById(R.id.radio_Button_Project);
         radioButtonOrganisation.setChecked(true);

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private final static  int CAPTURED_PICTURE=0;
     String mCurrentPhotoPath;
 
-    public static Calendar myCalendar = Calendar.getInstance();
+
 
     EditText email,phoneno,nickName,aboutThePerson;
     static String emailString="",phonenoString="",nickNameString="",aboutThePersonString="";

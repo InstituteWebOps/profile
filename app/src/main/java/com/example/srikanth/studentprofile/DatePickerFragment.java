@@ -6,31 +6,23 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import static com.example.srikanth.studentprofile.AccomEditActivity.accomFromyear;
-import static com.example.srikanth.studentprofile.AccomEditActivity.accomToyear;
-import static com.example.srikanth.studentprofile.AccomPencilEdit.accomPencilFromyear;
-import static com.example.srikanth.studentprofile.AccomPencilEdit.accomPencilToyear;
-import static com.example.srikanth.studentprofile.MainActivity.myCalendar;
-
 public class DatePickerFragment extends android.app.DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
+    Calendar myCalendar;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
-
+        
+        myCalendar = Calendar.getInstance();
         int year = myCalendar.get(Calendar.YEAR);
         int month = myCalendar.get(Calendar.MONTH);
         int day = myCalendar.get(Calendar.DAY_OF_MONTH);
@@ -39,6 +31,7 @@ public class DatePickerFragment extends android.app.DialogFragment
         DatePickerDialog dialog = new DatePickerDialog(getActivity(),android.R.style.Theme_Holo_Light, this, year, month, day);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getDatePicker().findViewById(Resources.getSystem().getIdentifier("day","id","android")).setVisibility(View.GONE);
+
         return dialog;
     }
 
