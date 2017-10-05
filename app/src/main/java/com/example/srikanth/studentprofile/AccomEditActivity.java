@@ -11,11 +11,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,8 +35,8 @@ public class AccomEditActivity extends Fragment {
 
         MainActivity.activity = "AccomEditActivity";
 
-        accomOrgan = (EditText) v.findViewById(R.id.accom_organ_edittext);
-        accomPos = (EditText) v.findViewById(R.id.accom_pos_edittext);
+        accomOrgan = (EditText) v.findViewById(R.id.profile_accom_organ_edittext);
+        accomPos = (EditText) v.findViewById(R.id.profile_accom_pos_edittext);
         accomFromyear = (EditText) v.findViewById(R.id.accom_fromyear_edittext);
         accomToyear = (EditText) v.findViewById(R.id.accom_toyear_edittext);
 

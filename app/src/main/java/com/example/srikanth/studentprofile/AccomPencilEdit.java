@@ -1,17 +1,14 @@
 package com.example.srikanth.studentprofile;
 
-import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-
-import static com.example.srikanth.studentprofile.AccomEditActivity.accomPos;
 
 public class AccomPencilEdit extends Fragment {
     static EditText accomPencilOrgan,accomPencilPos,accomPencilFromyear,accomPencilToyear;
@@ -34,8 +29,8 @@ public class AccomPencilEdit extends Fragment {
 
         MainActivity.activity = "AccomPencilEdit";
 
-        accomPencilOrgan = (EditText) v.findViewById(R.id.accom_organ_edittext);
-        accomPencilPos= (EditText) v.findViewById(R.id.accom_pos_edittext);
+        accomPencilOrgan = (EditText) v.findViewById(R.id.profile_accom_organ_edittext);
+        accomPencilPos= (EditText) v.findViewById(R.id.profile_accom_pos_edittext);
         accomPencilFromyear= (EditText) v.findViewById(R.id.accom_fromyear_edittext);
         accomPencilToyear = (EditText) v.findViewById(R.id.accom_toyear_edittext);
 

@@ -33,7 +33,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    EditText email,phoneno,nickName,aboutThePerson;
+    EditText email,phoneno,aboutThePerson;
     static String emailString="",phonenoString="",nickNameString="",aboutThePersonString="";
     CheckBox roomNoCheckbox;
     static Boolean roomNoChecked=true;
@@ -74,17 +73,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         activity = "MainActivity";
-        email = (EditText) findViewById(R.id.contactEmail);
-        phoneno = (EditText) findViewById(R.id.contactPhoneno);
-        nickName = (EditText) findViewById(R.id.nick_name) ;
-        aboutThePerson = (EditText) findViewById(R.id.about_the_person);
-        roomNoCheckbox = (CheckBox) findViewById(R.id.room_no_checkbox);
+        email = (EditText) findViewById(R.id.profile_contactEmail);
+        phoneno = (EditText) findViewById(R.id.profile_phoneno);
+        aboutThePerson = (EditText) findViewById(R.id.profile_about_the_person);
+        roomNoCheckbox = (CheckBox) findViewById(R.id.profile_room_no_checkbox);
         roomNoCheckbox.setChecked(true);
 
 
         fragmentManager = getFragmentManager();
 
-        profilePicImage = (CircleImageView) findViewById(R.id.profile_pic);
+        profilePicImage = (CircleImageView) findViewById(R.id.profile_profile_pic);
         profilePicImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        accomRV=(RecyclerView) findViewById(R.id.accom_rv);
+        accomRV=(RecyclerView) findViewById(R.id.profile_accom_rv);
         accomadapter=new AccomAdapter(this, AccomDetailArray.getAccomData());
         LinearLayoutManager layoutmanger=new LinearLayoutManager(this);
         accomRV.setLayoutManager(layoutmanger);
@@ -223,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        nickNameString = nickName.getText().toString();
         aboutThePersonString = aboutThePerson.getText().toString();
         phonenoString = phoneno.getText().toString();
         emailString = email.getText().toString();
@@ -233,13 +230,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        nickName.setText(nickNameString);
         email.setText(emailString);
         phoneno.setText(phonenoString);
         aboutThePerson.setText(aboutThePersonString);
         if(!roomNoChecked){
             roomNoCheckbox.setChecked(false);
-            ((TextView) findViewById(R.id.room_no)).setTextColor(Color.GRAY);
+            ((TextView) findViewById(R.id.profile_room_no)).setTextColor(Color.GRAY);
         }
     }
 
@@ -428,14 +424,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Check which radio button was clicked
         switch(view.getId()) {
-            case R.id.radio_Button_Organisation:
+            case R.id.profile_radio_button_organisation:
                 if (checked)
                     AccomEditActivity.radioButtonProject.setChecked(false);
                     AccomEditActivity.radioStatus="Organisation";
                     AccomEditActivity.accomOrgan.setHint("Organisation");
                     accomPos.setHint("Position in Organisation");
                 break;
-            case R.id.radio_Button_Project:
+            case R.id.profile_radio_Button_Project:
                 if (checked)
                     AccomEditActivity.radioButtonOrganisation.setChecked(false);
                     AccomEditActivity.radioStatus="Project";
@@ -448,11 +444,11 @@ public class MainActivity extends AppCompatActivity {
     public void onRoomNoChecked(View view){
         if(roomNoCheckbox.isChecked()){
             roomNoCheckbox.setChecked(true);
-            ((TextView) findViewById(R.id.room_no)).setTextColor(Color.BLACK);
+            ((TextView) findViewById(R.id.profile_room_no)).setTextColor(Color.BLACK);
         }
         else{
             roomNoCheckbox.setChecked(false);
-            ((TextView) findViewById(R.id.room_no)).setTextColor(Color.GRAY);
+            ((TextView) findViewById(R.id.profile_room_no)).setTextColor(Color.GRAY);
         }
     }
 

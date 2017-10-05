@@ -3,8 +3,6 @@ package com.example.srikanth.studentprofile;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -57,7 +54,7 @@ public class AccomAdapter extends RecyclerView.Adapter<AccomAdapter.AccomViewHol
             public void onClick(View v) {
                 postionValue=position;
 
-                if(v.getId()==R.id.accom_pencil_image){
+                if(v.getId()==R.id.profile_accom_pencil_image){
 
                     // Create new fragment and transaction
                     android.app.Fragment newFragment = new AccomPencilEdit();
@@ -78,7 +75,7 @@ public class AccomAdapter extends RecyclerView.Adapter<AccomAdapter.AccomViewHol
             @Override
             public void onClick(View v) {
 
-                if(v.getId() == R.id.accom_close_image){
+                if(v.getId() == R.id.profile_accom_close_image){
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("Do you want to delete it?")
@@ -113,13 +110,13 @@ public class AccomAdapter extends RecyclerView.Adapter<AccomAdapter.AccomViewHol
         public ImageView editPencil,closebutton;
         public AccomViewHolder(View itemView) {
             super(itemView);
-            cardview     = (CardView) itemView.findViewById(R.id.accom_cardview);
-            organisation = (TextView) itemView.findViewById(R.id.accom_card_organ);
-            position     = (TextView) itemView.findViewById(R.id.accom_card_pos);
-            fromyear     = (TextView) itemView.findViewById(R.id.accom_card_fromyear);
-            toyear       = (TextView) itemView.findViewById(R.id.accom_card_toyear);
-            editPencil   = (ImageView)itemView.findViewById(R.id.accom_pencil_image);
-            closebutton  = (ImageView)itemView.findViewById(R.id.accom_close_image);
+            cardview     = (CardView) itemView.findViewById(R.id.profile_accom_cardview);
+            organisation = (TextView) itemView.findViewById(R.id.profile_accom_card_organ);
+            position     = (TextView) itemView.findViewById(R.id.profile_accom_card_pos);
+            fromyear     = (TextView) itemView.findViewById(R.id.profile_accom_card_fromyear);
+            toyear       = (TextView) itemView.findViewById(R.id.profile_accom_card_toyear);
+            editPencil   = (ImageView)itemView.findViewById(R.id.profile_accom_pencil_image);
+            closebutton  = (ImageView)itemView.findViewById(R.id.profile_accom_close_image);
         }
 
     }
